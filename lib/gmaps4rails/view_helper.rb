@@ -9,7 +9,7 @@ module Gmaps4rails
     GOOGLE_EXT = "//google-maps-utility-library-v3.googlecode.com/svn/"
 
     # putching
-    GOOGLE_API_KEY = Emap::Application.config.google_js_api_key
+    GOOGLE_API_KEY = Rails.application.config.google_js_api_key
 
     
     # options is the hash passed to the 'gmaps' helper
