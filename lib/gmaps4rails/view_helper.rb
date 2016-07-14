@@ -6,7 +6,11 @@ module Gmaps4rails
     MAPQUEST   = "http://www.mapquestapi.com/sdk/js/v7.0.s/mqa.toolkit.js"                  
     BING       = "http://ecn.dev.virtualearth.net/mapcontrol/mapcontrol.ashx?v=7.0"
     GOOGLE     = "//maps.google.com/maps/api/js?v=3.8"
-    GOOGLE_EXT = "//google-maps-utility-library-v3.googlecode.com/svn/"    
+    GOOGLE_EXT = "//google-maps-utility-library-v3.googlecode.com/svn/"
+
+    # putching
+    GOOGLE_API_KEY = Emap::Application.config.google_js_api_key
+
     
     # options is the hash passed to the 'gmaps' helper
     # looks like:
@@ -63,13 +67,14 @@ module Gmaps4rails
     def get_vendor_scripts
       case map_provider
       when "openlayers"  then @js_array << OPENLAYERS
-      when "mapquest"    then @js_array << "#{MAPQUEST}?key=#{provider_key}"
+      when "mapquest"    then @js_array << "#{MAPQUEST}?key=AIzaSyAR3yBYJoW7MvVNqcnjs368kV0zANZsDSE"
       when "bing"        then @js_array << BING
-      else #case googlemaps which is the default
-        @js_array << "#{GOOGLE}&sensor=false&client=#{client}&key=#{provider_key}&libraries=geometry#{google_libraries}&#{google_map_i18n}"
-        @js_array << "https://cdn.rawgit.com/googlemaps/v3-utility-library/master/infobox/src/infobox_packed.js"  if custom_infowindow_class
-        @js_array << "https://cdn.rawgit.com/googlemaps/v3-utility-library/markerclustererplus/2.0.9/src/markerclusterer_packed.js"  if do_clustering
-        @js_array << "https://cdn.rawgit.com/googlemaps/v3-utility-library/master/richmarker/src/richmarker-compiled.js"  if rich_marker
+        else #case googlemaps which is the default
+        # @js_array << "#{GOOGLE}&sensor=false&client=#{client}&key=AIzaSyAR3yBYJoW7MvVNqcnjs368kV0zANZsDSE&libraries=geometry#{google_libraries}&#{google_map_i18n}"
+        @js_array << "#{GOOGLE}&sensor=false&client=#{client}&key=#{GOOGLE_API_KEY}&libraries=geometry#{google_libraries}&#{google_map_i18n}"
+        @js_array << "#{GOOGLE_EXT}tags/infobox/1.1.9/src/infobox_packed.js"                      if custom_infowindow_class
+        @js_array << "#{GOOGLE_EXT}tags/markerclustererplus/2.0.14/src/markerclusterer_packed.js" if do_clustering
+        @js_array << "#{GOOGLE_EXT}trunk/richmarker/src/richmarker-compiled.js"                   if rich_marker
       end
     end
     
